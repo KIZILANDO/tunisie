@@ -25,7 +25,7 @@
 
     #app {
       width: 100%;
-      max-width: 520px; /* Largeur idéale sur PC */
+      max-width: 520px;
       background: #ffffff;
       overflow: hidden;
       border-radius: 16px;
@@ -75,7 +75,7 @@
     #img-wrap {
       position: relative;
       width: 100%;
-      height: 340px; /* Hauteur par défaut sur PC */
+      height: 340px;
       overflow: hidden;
       background: #111827;
     }
@@ -121,7 +121,7 @@
 
     #buttons {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* Côte à côte sur PC */
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
       padding: 1rem 1.5rem 1.5rem;
     }
@@ -270,29 +270,26 @@
       transform: scale(0.98);
     }
 
-    /* ==========================================================================
-       MEDIA QUERIES (ADAPTATION MOBILE)
-       ========================================================================== */
     @media (max-width: 550px) {
       body {
         padding: 0;
-        background-color: #ffffff; /* Pas de fond gris visible sur mobile */
-        align-items: flex-start; /* Permet un défilement naturel si petit écran */
+        background-color: #ffffff;
+        align-items: flex-start;
       }
 
       #app {
-        border-radius: 0; /* Plein écran sur smartphone */
+        border-radius: 0;
         box-shadow: none;
       }
 
       #img-wrap {
-        height: 250px; /* Moins haut sur mobile pour tout voir d'un coup */
+        height: 250px;
       }
 
       #buttons {
-        grid-template-columns: 1fr; /* Boutons l'un au-dessus de l'autre */
+        grid-template-columns: 1fr;
         gap: 10px;
-        padding-bottom: 2rem; /* Espace de sécurité en bas des écrans tactiles */
+        padding-bottom: 2rem;
       }
       
       #ov-title {
@@ -350,91 +347,91 @@ const Q = [
     isTunisia: true,
     label: "Sidi Bou Saïd, Tunisie 🇹🇳",
     desc: "Ce village aux maisons blanches et portes bleues est une icône tunisienne, à 20 km de Tunis.",
-    img: "tunisie/sidi_bou_said.jpg"
+    img: "sidi_bou_said.jpg"
   },
   {
     isTunisia: false,
     label: "Santorin, Grèce 🇬🇷",
     desc: "Piège classique ! Ces maisons blanches et bleues sont à Oia, Santorin — pas en Tunisie.",
-    img: "autres/santorin.jpg"
+    img: "santorin.jpg"
   },
   {
     isTunisia: true,
     label: "Sahara tunisien, Tunisie 🇹🇳",
     desc: "Le Sahara couvre le sud de la Tunisie — c'est ici qu'ont été tournés plusieurs décors de Star Wars !",
-    img: "tunisie/sahara.jpg"
+    img: "sahara.jpg"
   },
   {
     isTunisia: false,
     label: "Pyramides de Gizeh, Égypte 🇪🇬",
     desc: "Les pyramides sont en Égypte. La Tunisie n'a pas de pyramides, mais des ruines romaines spectaculaires !",
-    img: "autres/egypt.jpg"
+    img: "egypt.jpg"
   },
   {
     isTunisia: true,
     label: "Plage de Djerba, Tunisie 🇹🇳",
     desc: "L'île de Djerba avec ses eaux turquoise est l'une des destinations balnéaires phares de Tunisie.",
-    img: "tunisie/djerba.jpg"
+    img: "djerba.jpg"
   },
   {
     isTunisia: false,
     label: "Colisée de Rome, Italie 🇮🇹",
     desc: "Le vrai Colisée est à Rome. Mais la Tunisie a son propre amphithéâtre : El Jem, aussi impressionnant !",
-    img: "autres/rome.jpg"
+    img: "rome.jpg"
   },
   {
     isTunisia: true,
     label: "Médina de Tunis, Tunisie 🇹🇳",
     desc: "La médina de Tunis, classée au patrimoine mondial UNESCO, est l'une des mieux préservées du monde arabe.",
-    img: "tunisie/medina_tunis.jpg"
+    img: "medina_tunis.jpg"
   },
   {
     isTunisia: false,
     label: "Marrakech, Maroc 🇲🇦",
     desc: "Ces ruelles colorées et animées sont dans la médina de Marrakech, au Maroc.",
-    img: "autres/marrakech.jpg"
+    img: "marrakech.jpg"
   },
   {
     isTunisia: true,
     label: "Amphithéâtre d'El Jem, Tunisie 🇹🇳",
     desc: "Souvent confondu avec le Colisée romain, l'amphithéâtre d'El Jem est bien en Tunisie — 3e plus grand du monde romain !",
-    img: "tunisie/el_jem.jpg"
+    img: "el_jem.jpg"
   },
   {
     isTunisia: false,
     label: "Désert du Wadi Rum, Jordanie 🇯🇴",
     desc: "Ce désert de grès rouge est en Jordanie. Il a aussi servi de décor à de nombreux films de science-fiction.",
-    img: "autres/wadi_rum.jpg"
+    img: "wadi_rum.jpg"
   },
   {
     isTunisia: true,
     label: "Kairouan, Tunisie 🇹🇳",
     desc: "Kairouan est l'une des villes saintes de l'Islam et un joyau architectural tunisien classé UNESCO.",
-    img: "tunisie/kairouan.jpg"
+    img: "kairouan.jpg"
   },
   {
     isTunisia: false,
     label: "Chefchaouen, Maroc 🇲🇦",
     desc: "La \"ville bleue\" est à Chefchaouen, dans le nord du Maroc — souvent confondue avec Sidi Bou Saïd !",
-    img: "autres/chefchaouen.jpg"
+    img: "chefchaouen.jpg"
   },
   {
     isTunisia: true,
     label: "Oasis de Tozeur, Tunisie 🇹🇳",
     desc: "Les palmeraies de Tozeur, aux portes du Sahara, sont une oasis magique dans le sud tunisien.",
-    img: "tunisie/tozeur.jpg"
+    img: "tozeur.jpg"
   },
   {
     isTunisia: true,
     label: "Hammamet, Tunisie 🇹🇳",
     desc: "Hammamet et ses plages de sable fin sont parmi les destinations balnéaires les plus populaires de Tunisie.",
-    img: "tunisie/hammamet.jpg"
+    img: "hammamet.jpg"
   },
   {
     isTunisia: false,
     label: "Alger, Algérie 🇩🇿",
     desc: "La Casbah d'Alger et ses ruelles blanches sont en Algérie, le voisin occidental de la Tunisie.",
-    img: "autres/alger.jpg"
+    img: "alger.jpg"
   }
 ];
 
