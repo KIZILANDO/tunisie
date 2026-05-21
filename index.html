@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz : Tunisie ou pas ?</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f4f5f7;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 520px; /* Largeur idéale sur PC */
+      background: #ffffff;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    #header {
+      background: #C8383B;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    #score-badge {
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    #progress-bar {
+      height: 6px;
+      background: #e5e7eb;
+    }
+
+    #progress-fill {
+      height: 100%;
+      background: #C8383B;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    #card {
+      background: #ffffff;
+    }
+
+    #img-wrap {
+      position: relative;
+      width: 100%;
+      height: 340px; /* Hauteur par défaut sur PC */
+      overflow: hidden;
+      background: #111827;
+    }
+
+    #img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+
+    #tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      z-index: 3;
+    }
+
+    #question {
+      padding: 1.5rem 1.5rem 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1f2937;
+      line-height: 1.4;
+    }
+
+    #q-counter {
+      padding: 1.2rem 1.5rem 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Côte à côte sur PC */
+      gap: 12px;
+      padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .btn {
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.1s, background-color 0.2s;
+    }
+
+    .btn-yes {
+      background: #C8383B;
+      color: #fff;
+    }
+
+    .btn-no {
+      background: #1f2937;
+      color: #fff;
+    }
+
+    .btn:hover:not(:disabled) {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    #overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 1.5rem;
+      z-index: 5;
+    }
+
+    #overlay.show {
+      display: flex;
+    }
+
+    #ov-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    #ov-icon {
+      font-size: 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    #ov-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem;
+      color: #fff;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+    }
+
+    #ov-desc {
+      color: #ffffff;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 420px;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 16px;
+      border-radius: 8px;
+    }
+
+    #end {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      text-align: center;
+      gap: 1rem;
+      background: #ffffff;
+    }
+
+    #end.show {
+      display: flex;
+    }
+
+    #end-emoji {
+      font-size: 4rem;
+    }
+
+    #end-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.8rem;
+      color: #C8383B;
+      letter-spacing: 2px;
+    }
+
+    #end-msg {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    #end-score {
+      font-size: 1rem;
+      color: #4b5563;
+      margin-bottom: 0.5rem;
+    }
+
+    #restart {
+      background: #C8383B;
+      color: #fff;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(200, 56, 59, 0.2);
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    #restart:hover {
+      background: #a82e30;
+    }
+    
+    #restart:active {
+      transform: scale(0.98);
+    }
+
+    /* ==========================================================================
+       MEDIA QUERIES (ADAPTATION MOBILE)
+       ========================================================================== */
+    @media (max-width: 550px) {
+      body {
+        padding: 0;
+        background-color: #ffffff; /* Pas de fond gris visible sur mobile */
+        align-items: flex-start; /* Permet un défilement naturel si petit écran */
+      }
+
+      #app {
+        border-radius: 0; /* Plein écran sur smartphone */
+        box-shadow: none;
+      }
+
+      #img-wrap {
+        height: 250px; /* Moins haut sur mobile pour tout voir d'un coup */
+      }
+
+      #buttons {
+        grid-template-columns: 1fr; /* Boutons l'un au-dessus de l'autre */
+        gap: 10px;
+        padding-bottom: 2rem; /* Espace de sécurité en bas des écrans tactiles */
+      }
+      
+      #ov-title {
+        font-size: 2.2rem;
+      }
+      
+      #ov-desc {
+        font-size: 0.88rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <div id="header">
+    <h1>🇹🇳 Tunisie ou pas ?</h1>
+    <div id="score-badge">Score : <span id="score-val">0</span></div>
+  </div>
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+
+  <div id="card">
+    <div id="q-counter"></div>
+    <div id="question">Est-ce que cette photo a été prise en Tunisie ?</div>
+    
+    <div id="img-wrap">
+      <img id="main-img" src="" alt="Image du quiz" />
+      <div id="tag">🤔 Tunisie ou pas ?</div>
+      <div id="overlay">
+        <div id="ov-bg"></div>
+        <div id="ov-icon"></div>
+        <div id="ov-title"></div>
+        <div id="ov-desc"></div>
+      </div>
+    </div>
+
+    <div id="buttons">
+      <button class="btn btn-yes" onclick="answer(true)">🇹🇳 Oui, Tunisie !</button>
+      <button class="btn btn-no" onclick="answer(false)">❌ Non, ailleurs</button>
+    </div>
+  </div>
+
+  <div id="end">
+    <div id="end-emoji"></div>
+    <div id="end-title">Terminé !</div>
+    <div id="end-msg"></div>
+    <div id="end-score"></div>
+    <button id="restart" onclick="restart()">↺ Rejouer</button>
+  </div>
+</div>
+
+<script>
+const Q = [
+  {
+    isTunisia: true,
+    label: "Sidi Bou Saïd, Tunisie 🇹🇳",
+    desc: "Ce village aux maisons blanches et portes bleues est une icône tunisienne, à 20 km de Tunis.",
+    img: "tunisie/sidi_bou_said.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Santorin, Grèce 🇬🇷",
+    desc: "Piège classique ! Ces maisons blanches et bleues sont à Oia, Santorin — pas en Tunisie.",
+    img: "autres/santorin.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Sahara tunisien, Tunisie 🇹🇳",
+    desc: "Le Sahara couvre le sud de la Tunisie — c'est ici qu'ont été tournés plusieurs décors de Star Wars !",
+    img: "tunisie/sahara.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Pyramides de Gizeh, Égypte 🇪🇬",
+    desc: "Les pyramides sont en Égypte. La Tunisie n'a pas de pyramides, mais des ruines romaines spectaculaires !",
+    img: "autres/egypt.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Plage de Djerba, Tunisie 🇹🇳",
+    desc: "L'île de Djerba avec ses eaux turquoise est l'une des destinations balnéaires phares de Tunisie.",
+    img: "tunisie/djerba.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Colisée de Rome, Italie 🇮🇹",
+    desc: "Le vrai Colisée est à Rome. Mais la Tunisie a son propre amphithéâtre : El Jem, aussi impressionnant !",
+    img: "autres/rome.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Médina de Tunis, Tunisie 🇹🇳",
+    desc: "La médina de Tunis, classée au patrimoine mondial UNESCO, est l'une des mieux préservées du monde arabe.",
+    img: "tunisie/medina_tunis.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Marrakech, Maroc 🇲🇦",
+    desc: "Ces ruelles colorées et animées sont dans la médina de Marrakech, au Maroc.",
+    img: "autres/marrakech.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Amphithéâtre d'El Jem, Tunisie 🇹🇳",
+    desc: "Souvent confondu avec le Colisée romain, l'amphithéâtre d'El Jem est bien en Tunisie — 3e plus grand du monde romain !",
+    img: "tunisie/el_jem.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Désert du Wadi Rum, Jordanie 🇯🇴",
+    desc: "Ce désert de grès rouge est en Jordanie. Il a aussi servi de décor à de nombreux films de science-fiction.",
+    img: "autres/wadi_rum.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Kairouan, Tunisie 🇹🇳",
+    desc: "Kairouan est l'une des villes saintes de l'Islam et un joyau architectural tunisien classé UNESCO.",
+    img: "tunisie/kairouan.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Chefchaouen, Maroc 🇲🇦",
+    desc: "La \"ville bleue\" est à Chefchaouen, dans le nord du Maroc — souvent confondue avec Sidi Bou Saïd !",
+    img: "autres/chefchaouen.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Oasis de Tozeur, Tunisie 🇹🇳",
+    desc: "Les palmeraies de Tozeur, aux portes du Sahara, sont une oasis magique dans le sud tunisien.",
+    img: "tunisie/tozeur.jpg"
+  },
+  {
+    isTunisia: true,
+    label: "Hammamet, Tunisie 🇹🇳",
+    desc: "Hammamet et ses plages de sable fin sont parmi les destinations balnéaires les plus populaires de Tunisie.",
+    img: "tunisie/hammamet.jpg"
+  },
+  {
+    isTunisia: false,
+    label: "Alger, Algérie 🇩🇿",
+    desc: "La Casbah d'Alger et ses ruelles blanches sont en Algérie, le voisin occidental de la Tunisie.",
+    img: "autres/alger.jpg"
+  }
+];
+
+let deck = [], idx = 0, score = 0, answered = false;
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5) }
+
+function loadQ(){
+  if(idx >= deck.length){ showEnd(); return; }
+  answered = false;
+  const q = deck[idx];
+  const img = document.getElementById('main-img');
+  img.style.opacity = '0';
+  img.src = '';
+  setTimeout(()=>{
+    img.onload = ()=>{ img.style.opacity='1'; };
+    img.onerror = ()=>{ img.style.opacity='0.3'; console.error("Impossible de charger :", q.img); };
+    img.src = q.img;
+  }, 80);
+  document.getElementById('overlay').className = '';
+  document.getElementById('tag').textContent = '🤔 Tunisie ou pas ?';
+  document.getElementById('q-counter').textContent = `Question ${idx+1} / ${deck.length}`;
+  document.querySelectorAll('.btn').forEach(b=>b.disabled=false);
+  document.getElementById('progress-fill').style.width = Math.round(idx/deck.length*100)+'%';
+}
+
+function answer(isYes){
+  if(answered) return;
+  answered = true;
+  document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
+  const q = deck[idx];
+  const correct = isYes === q.isTunisia;
+  if(correct) score++;
+  document.getElementById('score-val').textContent = score;
+  const bg = document.getElementById('ov-bg');
+  bg.style.background = correct ? 'rgba(22,163,74,0.92)' : 'rgba(220,38,38,0.92)';
+  document.getElementById('ov-icon').textContent = correct ? '✅' : '❌';
+  document.getElementById('ov-title').textContent = correct ? 'Bonne réponse !' : 'Raté !';
+  document.getElementById('ov-desc').textContent = q.label + ' — ' + q.desc;
+  document.getElementById('tag').textContent = q.isTunisia ? '🇹🇳 Tunisie' : '🌍 Autre pays';
+  document.getElementById('overlay').className = 'show';
+  setTimeout(()=>{ idx++; loadQ(); }, 3000);
+}
+
+function showEnd(){
+  document.getElementById('card').style.display = 'none';
+  const pct = Math.round(score/deck.length*100);
+  let emoji = pct>=80?'🏆':pct>=50?'😄':'😬';
+  let msg = pct>=80?'Tu es un expert de la Tunisie !':pct>=50?'Pas mal, tu connais bien !':'Il faut visiter la Tunisie !';
+  document.getElementById('end-emoji').textContent = emoji;
+  document.getElementById('end-msg').textContent = msg;
+  document.getElementById('end-score').textContent = `${score} / ${deck.length} bonnes réponses (${pct}%)`;
+  document.getElementById('end').className = 'show';
+  document.getElementById('progress-fill').style.width = '100%';
+}
+
+function restart(){
+  score = 0; idx = 0;
+  document.getElementById('score-val').textContent = '0';
+  document.getElementById('card').style.display = 'block';
+  document.getElementById('end').className = '';
+  deck = shuffle(Q);
+  loadQ();
+}
+
+deck = shuffle(Q);
+loadQ();
+</script>
+</body>
+</html>
